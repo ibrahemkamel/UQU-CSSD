@@ -19,6 +19,7 @@ from cssd.views import (
     notifications,
     reports,
     my_requests,
+    clinic_confirm_details,
 )
 
 urlpatterns = [
@@ -81,6 +82,11 @@ urlpatterns = [
         'clinic-pending-returns/',
         clinic_pending_returns,
         name='clinic_pending_returns'
+    ),
+    path(
+    'clinic-confirm-details/<int:request_id>/',
+    clinic_confirm_details,
+    name='clinic_confirm_details'
     ),
 
     path(

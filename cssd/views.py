@@ -426,15 +426,44 @@ def reports(request):
     })
 @login_required
 def my_requests(request):
-
     requests = CSSDRequest.objects.filter(
         created_by=request.user
     ).order_by("-created_at")
 
-    return render(
-        request,
-        "cssd/my_requests.html",
-        {
-            "requests": requests
-        }
-    )
+    return render(request, "cssd/my_requests.html", {
+        "requests": requests
+    })
+
+
+@login_required
+def clinic_confirm_details(request, request_id):
+    cssd_request = get_object_or_404(CSSDRequest, id=request_id)
+
+    if not can_access_request(request.user, cssd_request):
+        return HttpResponseForbidden("You are not allowed to access this request.")
+
+    if cssd_request.status != "RETURNED_TO_CLINIC":
+        return HttpResponseForbidden("This request is not ready for clinic confirmation.")
+
+    if is_cssd(request.user) and not is_admin(request.user):
+        return HttpResponseForbidden("CSSD cannot confirm clinic receipt.")
+
+    if request.method == "POST":
+        cssd_request.status = "CLOSED"
+        cssd_request.closed_by = request.user
+        cssd_request.closed_at = timezone.now()
+        cssd_request.save()
+
+        Notification.objects.create(
+            target_group="CSSD",
+            title="Clinic Confirmed Receipt",
+            message=f"Clinic confirmed receiving request #{cssd_request.id}",
+            cssd_request=cssd_request
+        )
+
+        return redirect("clinic_pending_returns")
+
+    return render(request, "cssd/clinic_confirm_details.html", {
+        "request_obj": cssd_request,
+        "items": cssd_request.items.all(),
+    })
