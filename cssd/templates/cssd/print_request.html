@@ -1,0 +1,215 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Print Request #{{ request_obj.id }}</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 25px;
+            color: #222;
+        }
+
+        .print-btn {
+            margin-bottom: 15px;
+            padding: 8px 15px;
+            cursor: pointer;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 3px solid #00695c;
+            padding-bottom: 15px;
+            margin-bottom: 25px;
+        }
+
+        .logo-left,
+        .logo-right {
+            height: 150px;
+            width: auto;
+        }
+
+        .title {
+            text-align: center;
+            color: #00695c;
+        }
+
+        .title h1 {
+            margin: 0;
+            font-size: 40px;
+            font-weight: bold;
+        }
+
+        .title p {
+            margin: 3px;
+            font-size: 14px;
+        }
+
+        .right-side {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .qr-inline {
+            text-align: center;
+        }
+
+        .qr-inline img {
+            width: 95px;
+            height: 95px;
+            border: 1px solid #ddd;
+            padding: 5px;
+            background: white;
+        }
+
+        .qr-inline small {
+            display: block;
+            font-size: 10px;
+            margin-top: 3px;
+        }
+
+        .info{
+    display:grid;
+    grid-template-columns: repeat(2,1fr);
+    gap:10px;
+    margin-bottom:25px;
+    font-size:15px;
+}
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+            font-size: 13px;
+        }
+
+        th {
+            background: #00695c;
+            color: white;
+        }
+
+        th, td {
+            border: 1px solid #999;
+            padding: 8px;
+            text-align: center;
+        }
+
+        .signatures {
+            margin-top: 50px;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .signature-box {
+            width: 30%;
+            text-align: center;
+            border-top: 1px solid #333;
+            padding-top: 10px;
+            font-size: 13px;
+        }
+
+        .footer {
+            margin-top: 35px;
+            text-align: center;
+            color: #00695c;
+            font-weight: bold;
+            font-size: 13px;
+        }
+
+        @media print {
+            .print-btn {
+                display: none;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<button class="print-btn" onclick="window.print()">
+    Print / Save as PDF
+</button>
+
+<div class="header">
+
+    <img src="{% static 'images/hospital_logo.png' %}" class="logo-left">
+
+    <div class="title">
+        <h1>CSSD REQUEST FORM</h1>
+        <p>UMM ALQURA Dental teaching Hospital Instruments Workflow</p>
+        <p><strong>Request #{{ request_obj.id }}</strong></p>
+    </div>
+
+    <div class="right-side">
+        <img src="{% static 'images/company_logo.png' %}" class="logo-right">
+
+        <div class="qr-inline">
+            <img src="data:image/png;base64,{{ qr_code }}">
+            <small>Scan QR</small>
+        </div>
+    </div>
+
+</div>
+
+<div class="info">
+    <p><strong>Request No:</strong> #{{ request_obj.id }}</p>
+    <p><strong>Location:</strong> {{ request_obj.location }}</p>
+    <p><strong>Procedure:</strong> {{ request_obj.procedure }}</p>
+    <p><strong>Status:</strong> {{ request_obj.status }}</p>
+    <p><strong>Date:</strong> {{ request_obj.created_at }}</p>
+</div>
+
+<table>
+    <thead>
+        <tr>
+            <th>#</th>
+            <th>Instrument</th>
+            <th>Type</th>
+            <th>Sent Qty</th>
+            <th>Received by CSSD</th>
+            <th>Returned Qty</th>
+            <th>Remarks</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        {% for item in items %}
+        <tr>
+            <td>{{ forloop.counter }}</td>
+            <td>{{ item.instrument_name }}</td>
+            <td>
+                {% if item.is_manual %}
+                    Manual
+                {% else %}
+                    Template
+                {% endif %}
+            </td>
+            <td>{{ item.quantity_sent }}</td>
+            <td>{{ item.quantity_received_by_cssd }}</td>
+            <td>{{ item.quantity_returned }}</td>
+            <td>{{ item.remarks }}</td>
+        </tr>
+        {% empty %}
+        <tr>
+            <td colspan="7">No items found</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<div class="signatures">
+    <div class="signature-box">Clinic Signature</div>
+    <div class="signature-box">CSSD Signature</div>
+    <div class="signature-box">Supervisor Signature</div>
+</div>
+
+<div class="footer">
+    Powered by Eng. Ibrahem Kamel
+</div>
+
+</body>
+</html>

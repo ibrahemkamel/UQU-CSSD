@@ -1,0 +1,106 @@
+{% extends 'cssd/base.html' %}
+{% block title %}Reports{% endblock %}
+
+{% block content %}
+
+<h3 class="fw-bold text-success mb-4">
+    Reports & Statistics
+</h3>
+
+<div class="row mb-4">
+
+    <div class="col-md-2 mb-3">
+        <div class="card shadow-sm text-center">
+            <div class="card-body">
+                <small>Total</small>
+                <h2>{{ total_requests }}</h2>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-2 mb-3">
+        <div class="card shadow-sm text-center">
+            <div class="card-body">
+                <small>Pending</small>
+                <h2>{{ pending_requests }}</h2>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-2 mb-3">
+        <div class="card shadow-sm text-center">
+            <div class="card-body">
+                <small>Received</small>
+                <h2>{{ received_requests }}</h2>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-2 mb-3">
+        <div class="card shadow-sm text-center">
+            <div class="card-body">
+                <small>Returned</small>
+                <h2>{{ returned_requests }}</h2>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-2 mb-3">
+        <div class="card shadow-sm text-center">
+            <div class="card-body">
+                <small>Closed</small>
+                <h2>{{ closed_requests }}</h2>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<h5 class="fw-bold text-success">
+    Requests By Location
+</h5>
+
+<table class="table table-bordered bg-white shadow-sm mb-4">
+    <thead class="table-success">
+        <tr>
+            <th>Location</th>
+            <th>Total Requests</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for loc in locations %}
+        <tr>
+            <td>{{ loc.location__name }}</td>
+            <td>{{ loc.total }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<h5 class="fw-bold text-success">
+    Requests By User
+</h5>
+
+<table class="table table-bordered bg-white shadow-sm">
+    <thead class="table-success">
+        <tr>
+            <th>User</th>
+            <th>Total Requests</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for usr in users %}
+        <tr>
+            <td>{{ usr.created_by__username }}</td>
+            <td>{{ usr.total }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<a href="{% url 'dashboard' %}"
+   class="btn btn-secondary">
+    Back
+</a>
+
+{% endblock %}

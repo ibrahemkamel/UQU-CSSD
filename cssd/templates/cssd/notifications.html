@@ -1,0 +1,45 @@
+{% extends 'cssd/base.html' %}
+
+{% block title %}Notifications{% endblock %}
+
+{% block content %}
+
+<h3 class="fw-bold text-success mb-4">
+    Notifications
+</h3>
+
+<div class="card shadow-sm">
+
+    <div class="list-group list-group-flush">
+
+        {% for n in notifications %}
+
+        <div class="list-group-item">
+
+            <h6 class="mb-1">
+                {{ n.title }}
+            </h6>
+
+            <small class="text-muted">
+                {{ n.created_at }}
+            </small>
+
+            <p class="mb-0 mt-2">
+                {{ n.message }}
+            </p>
+
+        </div>
+
+        {% empty %}
+
+        <div class="list-group-item text-muted">
+            No Notifications
+        </div>
+
+        {% endfor %}
+
+    </div>
+
+</div>
+
+{% endblock %}
