@@ -20,6 +20,7 @@ from cssd.views import (
     reports,
     my_requests,
     clinic_confirm_details,
+    create_admin_once,
 )
 
 urlpatterns = [
@@ -128,5 +129,9 @@ path(
     my_requests,
     name='my_requests'
 ),
-
+path(
+    'create-admin-once/',
+    create_admin_once,
+    name='create_admin_once'
+),
 ]

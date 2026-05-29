@@ -3,6 +3,7 @@ from django.http import JsonResponse, HttpResponseForbidden
 from django.contrib.auth.decorators import login_required
 from django.utils import timezone
 from django.db.models import Count
+from django.contrib.auth.models import User, Group
 
 import qrcode
 import base64
@@ -467,3 +468,17 @@ def clinic_confirm_details(request, request_id):
         "request_obj": cssd_request,
         "items": cssd_request.items.all(),
     })
+def create_admin_once(request):
+    if not User.objects.filter(username="admin").exists():
+        user = User.objects.create_superuser(
+            username="admin",
+            email="admin@test.com",
+            password="Admin@12345"
+        )
+
+        admin_group, _ = Group.objects.get_or_create(name="ADMIN")
+        user.groups.add(admin_group)
+
+        return JsonResponse({"status": "admin created"})
+
+    return JsonResponse({"status": "admin already exists"})
