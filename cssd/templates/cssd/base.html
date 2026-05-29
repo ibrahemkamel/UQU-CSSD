@@ -165,7 +165,7 @@
     </div>
 </nav>
 
-<div class="container">
+<div class="container-fluid px-2 px-md-4">
     <div class="main-card">
         {% block content %}
         {% endblock %}
@@ -175,6 +175,36 @@
 <footer>
     Powered by Eng. Ibrahem Kamel
 </footer>
+<style>
+@media (max-width: 768px) {
 
+    body{
+        font-size: 14px;
+    }
+
+    .main-card{
+        padding: 10px !important;
+        margin: 5px !important;
+    }
+
+    .btn{
+        font-size: 13px;
+        padding: 6px 10px;
+    }
+
+    .table{
+        font-size: 12px;
+    }
+
+    h1,h2,h3,h4,h5{
+        font-size: 90%;
+    }
+
+    .navbar img{
+        max-height: 45px !important;
+    }
+
+}
+</style>
 </body>
 </html>
