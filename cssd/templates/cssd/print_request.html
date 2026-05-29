@@ -5,31 +5,42 @@
     <title>Print Request #{{ request_obj.id }}</title>
 
     <style>
+        @page {
+            size: A4;
+            margin: 14mm;
+        }
+
         body {
             font-family: Arial, sans-serif;
-            margin: 25px;
             color: #222;
+            margin: 0;
+            font-size: 12px;
         }
 
         .print-btn {
-            margin-bottom: 15px;
-            padding: 8px 15px;
+            margin-bottom: 12px;
+            padding: 8px 14px;
             cursor: pointer;
         }
 
-        .header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-bottom: 3px solid #00695c;
-            padding-bottom: 15px;
-            margin-bottom: 25px;
+        .sheet {
+            width: 100%;
         }
 
-        .logo-left,
-        .logo-right {
-            height: 150px;
-            width: auto;
+        .header {
+            display: grid;
+            grid-template-columns: 90px 1fr 90px 90px;
+            align-items: center;
+            gap: 12px;
+            border-bottom: 3px solid #00695c;
+            padding-bottom: 12px;
+            margin-bottom: 18px;
+        }
+
+        .logo {
+            max-height: 78px;
+            max-width: 90px;
+            object-fit: contain;
         }
 
         .title {
@@ -39,52 +50,67 @@
 
         .title h1 {
             margin: 0;
-            font-size: 40px;
+            font-size: 28px;
             font-weight: bold;
+            letter-spacing: .5px;
         }
 
         .title p {
-            margin: 3px;
-            font-size: 14px;
+            margin: 3px 0;
+            font-size: 12px;
+            color: #444;
         }
 
-        .right-side {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
-
-        .qr-inline {
+        .qr {
             text-align: center;
         }
 
-        .qr-inline img {
-            width: 95px;
-            height: 95px;
+        .qr img {
+            width: 72px;
+            height: 72px;
             border: 1px solid #ddd;
-            padding: 5px;
+            padding: 4px;
             background: white;
         }
 
-        .qr-inline small {
+        .qr small {
             display: block;
-            font-size: 10px;
-            margin-top: 3px;
+            font-size: 9px;
+            margin-top: 2px;
         }
 
-        .info{
-    display:grid;
-    grid-template-columns: repeat(2,1fr);
-    gap:10px;
-    margin-bottom:25px;
-    font-size:15px;
-}
+        .section-title {
+            background: #00695c;
+            color: white;
+            padding: 6px 8px;
+            font-weight: bold;
+            margin-top: 16px;
+            margin-bottom: 8px;
+        }
+
+        .info {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 8px 20px;
+            margin-bottom: 12px;
+        }
+
+        .info-box {
+            border: 1px solid #ccc;
+            padding: 7px 9px;
+            min-height: 30px;
+        }
+
+        .label {
+            font-weight: bold;
+            color: #00695c;
+        }
 
         table {
             width: 100%;
             border-collapse: collapse;
-            margin-top: 15px;
-            font-size: 13px;
+            margin-top: 8px;
+            font-size: 11px;
         }
 
         th {
@@ -93,31 +119,47 @@
         }
 
         th, td {
-            border: 1px solid #999;
-            padding: 8px;
+            border: 1px solid #777;
+            padding: 6px;
             text-align: center;
+        }
+
+        td.left {
+            text-align: left;
+        }
+
+        .audit-table th {
+            background: #e8f3ef;
+            color: #00695c;
         }
 
         .signatures {
-            margin-top: 50px;
-            display: flex;
-            justify-content: space-between;
+            margin-top: 35px;
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
         }
 
         .signature-box {
-            width: 30%;
             text-align: center;
             border-top: 1px solid #333;
-            padding-top: 10px;
-            font-size: 13px;
+            padding-top: 8px;
+            font-size: 11px;
+            min-height: 35px;
+        }
+
+        .signature-box strong {
+            display: block;
+            color: #00695c;
+            margin-bottom: 3px;
         }
 
         .footer {
-            margin-top: 35px;
+            margin-top: 25px;
             text-align: center;
             color: #00695c;
             font-weight: bold;
-            font-size: 13px;
+            font-size: 11px;
         }
 
         @media print {
@@ -134,81 +176,222 @@
     Print / Save as PDF
 </button>
 
-<div class="header">
+<div class="sheet">
 
-    <img src="{% static 'images/hospital_logo.png' %}" class="logo-left">
+    <div class="header">
+        <img src="{% static 'images/hospital_logo.png' %}" class="logo">
 
-    <div class="title">
-        <h1>CSSD REQUEST FORM</h1>
-        <p>UMM ALQURA Dental teaching Hospital Instruments Workflow</p>
-        <p><strong>Request #{{ request_obj.id }}</strong></p>
-    </div>
+        <div class="title">
+            <h1>CSSD REQUEST FORM</h1>
+            <p>UMM ALQURA Dental Teaching Hospital</p>
+            <p>Instruments Workflow</p>
+            <p><strong>Request #{{ request_obj.id }}</strong></p>
+        </div>
 
-    <div class="right-side">
-        <img src="{% static 'images/company_logo.png' %}" class="logo-right">
+        <img src="{% static 'images/company_logo.png' %}" class="logo">
 
-        <div class="qr-inline">
+        <div class="qr">
             <img src="data:image/png;base64,{{ qr_code }}">
             <small>Scan QR</small>
         </div>
     </div>
 
-</div>
+    <div class="section-title">Request Information</div>
 
-<div class="info">
-    <p><strong>Request No:</strong> #{{ request_obj.id }}</p>
-    <p><strong>Location:</strong> {{ request_obj.location }}</p>
-    <p><strong>Procedure:</strong> {{ request_obj.procedure }}</p>
-    <p><strong>Status:</strong> {{ request_obj.status }}</p>
-    <p><strong>Date:</strong> {{ request_obj.created_at }}</p>
-</div>
+    <div class="info">
+        <div class="info-box">
+            <span class="label">Request No:</span>
+            #{{ request_obj.id }}
+        </div>
 
-<table>
-    <thead>
-        <tr>
-            <th>#</th>
-            <th>Instrument</th>
-            <th>Type</th>
-            <th>Sent Qty</th>
-            <th>Received by CSSD</th>
-            <th>Returned Qty</th>
-            <th>Remarks</th>
-        </tr>
-    </thead>
+        <div class="info-box">
+            <span class="label">Location:</span>
+            {{ request_obj.location }}
+        </div>
 
-    <tbody>
-        {% for item in items %}
-        <tr>
-            <td>{{ forloop.counter }}</td>
-            <td>{{ item.instrument_name }}</td>
-            <td>
-                {% if item.is_manual %}
-                    Manual
-                {% else %}
-                    Template
-                {% endif %}
-            </td>
-            <td>{{ item.quantity_sent }}</td>
-            <td>{{ item.quantity_received_by_cssd }}</td>
-            <td>{{ item.quantity_returned }}</td>
-            <td>{{ item.remarks }}</td>
-        </tr>
-        {% empty %}
-        <tr>
-            <td colspan="7">No items found</td>
-        </tr>
-        {% endfor %}
-    </tbody>
-</table>
+        <div class="info-box">
+            <span class="label">Status:</span>
+            {{ request_obj.status }}
+        </div>
 
-<div class="signatures">
-    <div class="signature-box">Clinic Signature</div>
-    <div class="signature-box">CSSD Signature</div>
-    <div class="signature-box">Supervisor Signature</div>
-</div>
+        <div class="info-box">
+            <span class="label">Created Date:</span>
+            {{ request_obj.created_at }}
+        </div>
 
-<div class="footer">
-    Powered by Eng. Ibrahem Kamel
+        <div class="info-box">
+            <span class="label">Procedure:</span>
+            {% if request_obj.procedure %}
+                {{ request_obj.procedure }}
+            {% else %}
+                -
+            {% endif %}
+        </div>
+
+        <div class="info-box">
+            <span class="label">Created By:</span>
+            {{ request_obj.created_by }}
+        </div>
+    </div>
+
+    <div class="section-title">Request Items</div>
+
+    <table>
+        <thead>
+            <tr>
+                <th width="35">#</th>
+                <th>Instrument</th>
+                <th width="75">Type</th>
+                <th width="70">Sent Qty</th>
+                <th width="95">Received by CSSD</th>
+                <th width="85">Returned Qty</th>
+                <th>Remarks</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            {% for item in items %}
+            <tr>
+                <td>{{ forloop.counter }}</td>
+                <td class="left">{{ item.instrument_name }}</td>
+                <td>
+                    {% if item.is_manual %}
+                        Manual
+                    {% else %}
+                        Template
+                    {% endif %}
+                </td>
+                <td>{{ item.quantity_sent }}</td>
+                <td>{{ item.quantity_received_by_cssd }}</td>
+                <td>{{ item.quantity_returned }}</td>
+                <td>
+                    {% if item.remarks %}
+                        {{ item.remarks }}
+                    {% else %}
+                        -
+                    {% endif %}
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="7">No items found</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <div class="section-title">Workflow / Audit Trail</div>
+
+    <table class="audit-table">
+        <thead>
+            <tr>
+                <th>Step</th>
+                <th>User</th>
+                <th>Date / Time</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            <tr>
+                <td>Request Created</td>
+                <td>{{ request_obj.created_by }}</td>
+                <td>{{ request_obj.created_at }}</td>
+            </tr>
+
+            <tr>
+                <td>Received by CSSD</td>
+                <td>
+                    {% if request_obj.received_by %}
+                        {{ request_obj.received_by }}
+                    {% else %}
+                        -
+                    {% endif %}
+                </td>
+                <td>
+                    {% if request_obj.received_at %}
+                        {{ request_obj.received_at }}
+                    {% else %}
+                        -
+                    {% endif %}
+                </td>
+            </tr>
+
+            <tr>
+                <td>Returned by CSSD</td>
+                <td>
+                    {% if request_obj.returned_by %}
+                        {{ request_obj.returned_by }}
+                    {% else %}
+                        -
+                    {% endif %}
+                </td>
+                <td>
+                    {% if request_obj.returned_at %}
+                        {{ request_obj.returned_at }}
+                    {% else %}
+                        -
+                    {% endif %}
+                </td>
+            </tr>
+
+            <tr>
+                <td>Confirmed by Clinic / Closed</td>
+                <td>
+                    {% if request_obj.closed_by %}
+                        {{ request_obj.closed_by }}
+                    {% else %}
+                        -
+                    {% endif %}
+                </td>
+                <td>
+                    {% if request_obj.closed_at %}
+                        {{ request_obj.closed_at }}
+                    {% else %}
+                        -
+                    {% endif %}
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div class="signatures">
+        <div class="signature-box">
+            <strong>Requested By</strong>
+            {{ request_obj.created_by }}
+        </div>
+
+        <div class="signature-box">
+            <strong>Received By CSSD</strong>
+            {% if request_obj.received_by %}
+                {{ request_obj.received_by }}
+            {% else %}
+                -
+            {% endif %}
+        </div>
+
+        <div class="signature-box">
+            <strong>Returned By CSSD</strong>
+            {% if request_obj.returned_by %}
+                {{ request_obj.returned_by }}
+            {% else %}
+                -
+            {% endif %}
+        </div>
+
+        <div class="signature-box">
+            <strong>Confirmed By Clinic</strong>
+            {% if request_obj.closed_by %}
+                {{ request_obj.closed_by }}
+            {% else %}
+                -
+            {% endif %}
+        </div>
+    </div>
+
+    <div class="footer">
+        Powered by Eng. Ibrahem Kamel
+    </div>
+
 </div>
 
 </body>
