@@ -31,18 +31,23 @@
             box-shadow: 0 5px 15px rgba(0,0,0,0.12);
         }
 
-        .header-logo{
-            height: 90px;
-            width: auto;
-            object-fit: contain;
-        }
+       .header-logo{
+    height:90px;
+    width:auto;
+    transition:0.3s;
+}
+
+.header-logo:hover{
+    transform:scale(1.05);
+}
 
         .system-title{
-            color: #00695c;
-            font-weight: 700;
-            font-size: 34px;
-            margin-bottom: 5px;
-        }
+    color:#00695c;
+    font-weight:800;
+    font-size:42px;
+    letter-spacing:1px;
+    text-shadow:0 2px 8px rgba(0,105,92,0.15);
+}
 
         .system-subtitle{
             font-size: 15px;
@@ -165,25 +170,65 @@
     background: white;
 }
 
+.header-area{
+    position: relative;
+    overflow: hidden;
+
+    background:
+        linear-gradient(
+            90deg,
+            rgba(0,105,92,0.08),
+            rgba(255,255,255,0.95),
+            rgba(0,105,92,0.08)
+        );
+
+    border-bottom: 4px solid #00695c;
+}
+
 .header-area::before{
-    content: "";
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    width: 280px;
-    height: 280px;
-    transform: translate(-50%,-50%);
-    background-image: url("{% static 'images/hospital_logo.png' %}");
-    background-repeat: no-repeat;
-    background-position: center;
-    background-size: contain;
-    opacity: 0.06;
-    z-index: 0;
+    content:"";
+
+    position:absolute;
+
+    top:50%;
+    left:50%;
+
+    width:350px;
+    height:350px;
+
+    transform:translate(-50%,-50%);
+
+    background-image:url("{% static 'images/hospital_logo.png' %}");
+    background-repeat:no-repeat;
+    background-position:center;
+    background-size:contain;
+
+    opacity:0.04;
+
+    z-index:0;
 }
 
 .header-area .container{
-    position: relative;
-    z-index: 1;
+    position:relative;
+    z-index:2;
+}
+
+.header-area::after{
+    content:"";
+
+    position:absolute;
+    left:0;
+    right:0;
+    bottom:0;
+
+    height:2px;
+
+    background:linear-gradient(
+        90deg,
+        transparent,
+        #00695c,
+        transparent
+    );
 }
     </style>
 </head>
