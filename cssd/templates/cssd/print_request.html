@@ -1,4 +1,5 @@
 {% load static %}
+{% load tz %}
 <!DOCTYPE html>
 <html>
 <head>
@@ -128,30 +129,45 @@
             text-align: left;
         }
 
-        .audit-table th {
-            background: #e8f3ef;
-            color: #00695c;
-        }
-
         .signatures {
-            margin-top: 35px;
+            margin-top: 42px;
             display: grid;
             grid-template-columns: repeat(4, 1fr);
-            gap: 15px;
+            gap: 18px;
+            page-break-inside: avoid;
         }
 
         .signature-box {
             text-align: center;
-            border-top: 1px solid #333;
-            padding-top: 8px;
             font-size: 11px;
-            min-height: 35px;
+            min-height: 95px;
         }
 
-        .signature-box strong {
-            display: block;
+        .sign-name {
+            font-weight: bold;
+            color: #222;
+            min-height: 18px;
+            margin-bottom: 4px;
+        }
+
+        .sign-date {
+            color: #555;
+            font-size: 10px;
+            min-height: 16px;
+            margin-bottom: 6px;
+        }
+
+        .sign-title {
             color: #00695c;
-            margin-bottom: 3px;
+            font-weight: bold;
+            min-height: 18px;
+            margin-bottom: 18px;
+        }
+
+        .sign-line {
+            border-top: 1px solid #333;
+            width: 100%;
+            height: 1px;
         }
 
         .footer {
@@ -216,7 +232,7 @@
 
         <div class="info-box">
             <span class="label">Created Date:</span>
-            {{ request_obj.created_at }}
+            {{ request_obj.created_at|localtime|date:"M d, Y - h:i A" }}
         </div>
 
         <div class="info-box">
@@ -280,116 +296,86 @@
         </tbody>
     </table>
 
-    <div class="section-title">Workflow / Audit Trail</div>
-
-    <table class="audit-table">
-        <thead>
-            <tr>
-                <th>Step</th>
-                <th>User</th>
-                <th>Date / Time</th>
-            </tr>
-        </thead>
-
-        <tbody>
-            <tr>
-                <td>Request Created</td>
-                <td>{{ request_obj.created_by }}</td>
-                <td>{{ request_obj.created_at }}</td>
-            </tr>
-
-            <tr>
-                <td>Received by CSSD</td>
-                <td>
-                    {% if request_obj.received_by %}
-                        {{ request_obj.received_by }}
-                    {% else %}
-                        -
-                    {% endif %}
-                </td>
-                <td>
-                    {% if request_obj.received_at %}
-                        {{ request_obj.received_at }}
-                    {% else %}
-                        -
-                    {% endif %}
-                </td>
-            </tr>
-
-            <tr>
-                <td>Returned by CSSD</td>
-                <td>
-                    {% if request_obj.returned_by %}
-                        {{ request_obj.returned_by }}
-                    {% else %}
-                        -
-                    {% endif %}
-                </td>
-                <td>
-                    {% if request_obj.returned_at %}
-                        {{ request_obj.returned_at }}
-                    {% else %}
-                        -
-                    {% endif %}
-                </td>
-            </tr>
-
-            <tr>
-                <td>Confirmed by Clinic / Closed</td>
-                <td>
-                    {% if request_obj.closed_by %}
-                        {{ request_obj.closed_by }}
-                    {% else %}
-                        -
-                    {% endif %}
-                </td>
-                <td>
-                    {% if request_obj.closed_at %}
-                        {{ request_obj.closed_at }}
-                    {% else %}
-                        -
-                    {% endif %}
-                </td>
-            </tr>
-        </tbody>
-    </table>
-
     <div class="signatures">
         <div class="signature-box">
-            <strong>Requested By</strong>
-            {{ request_obj.created_by }}
+            <div class="sign-name">
+                {{ request_obj.created_by }}
+            </div>
+            <div class="sign-date">
+                {{ request_obj.created_at|localtime|date:"M d, Y - h:i A" }}
+            </div>
+            <div class="sign-title">
+                Requested By
+            </div>
+            <div class="sign-line"></div>
         </div>
 
         <div class="signature-box">
-            <strong>Received By CSSD</strong>
-            {% if request_obj.received_by %}
-                {{ request_obj.received_by }}
-            {% else %}
-                -
-            {% endif %}
+            <div class="sign-name">
+                {% if request_obj.received_by %}
+                    {{ request_obj.received_by }}
+                {% else %}
+                    -
+                {% endif %}
+            </div>
+            <div class="sign-date">
+                {% if request_obj.received_at %}
+                    {{ request_obj.received_at|localtime|date:"M d, Y - h:i A" }}
+                {% else %}
+                    -
+                {% endif %}
+            </div>
+            <div class="sign-title">
+                Received By CSSD
+            </div>
+            <div class="sign-line"></div>
         </div>
 
         <div class="signature-box">
-            <strong>Returned By CSSD</strong>
-            {% if request_obj.returned_by %}
-                {{ request_obj.returned_by }}
-            {% else %}
-                -
-            {% endif %}
+            <div class="sign-name">
+                {% if request_obj.returned_by %}
+                    {{ request_obj.returned_by }}
+                {% else %}
+                    -
+                {% endif %}
+            </div>
+            <div class="sign-date">
+                {% if request_obj.returned_at %}
+                    {{ request_obj.returned_at|localtime|date:"M d, Y - h:i A" }}
+                {% else %}
+                    -
+                {% endif %}
+            </div>
+            <div class="sign-title">
+                Returned By CSSD
+            </div>
+            <div class="sign-line"></div>
         </div>
 
         <div class="signature-box">
-            <strong>Confirmed By Clinic</strong>
-            {% if request_obj.closed_by %}
-                {{ request_obj.closed_by }}
-            {% else %}
-                -
-            {% endif %}
+            <div class="sign-name">
+                {% if request_obj.closed_by %}
+                    {{ request_obj.closed_by }}
+                {% else %}
+                    -
+                {% endif %}
+            </div>
+            <div class="sign-date">
+                {% if request_obj.closed_at %}
+                    {{ request_obj.closed_at|localtime|date:"M d, Y - h:i A" }}
+                {% else %}
+                    -
+                {% endif %}
+            </div>
+            <div class="sign-title">
+                Confirmed By Clinic
+            </div>
+            <div class="sign-line"></div>
         </div>
     </div>
 
     <div class="footer">
-        Powered by Eng. Ibrahem Taher kamel
+        Powered by Eng. Ibrahem Taher Kamel
     </div>
 
 </div>
