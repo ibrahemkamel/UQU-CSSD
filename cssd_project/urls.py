@@ -27,7 +27,7 @@ path(
     'change-password/',
     auth_views.PasswordChangeView.as_view(
         template_name='cssd/change_password.html',
-        success_url='/password-change-done/'
+        success_url='/login/'
     ),
     name='change_password'
 ),
