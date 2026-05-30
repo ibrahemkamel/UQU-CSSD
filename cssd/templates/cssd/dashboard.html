@@ -82,12 +82,6 @@
             Central Sterile Supply Department Tracking System
         </small>
     </div>
-
-    {% if is_admin_user or is_clinic_user %}
-    <a href="{% url 'new_request' %}" class="btn btn-success top-new-btn">
-        + New Request
-    </a>
-    {% endif %}
 </div>
 
 <div class="row g-2 mb-4">
