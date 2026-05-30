@@ -31,23 +31,76 @@
             box-shadow: 0 5px 15px rgba(0,0,0,0.12);
         }
 
-       .header-logo{
-    height:90px;
-    width:auto;
-    transition:0.3s;
-}
+        .header-area{
+            position: relative;
+            overflow: hidden;
+            background:
+                linear-gradient(
+                    90deg,
+                    rgba(0,105,92,0.18),
+                    rgba(255,255,255,0.96),
+                    rgba(0,105,92,0.18)
+                );
+            border-bottom: 5px solid #00695c;
+        }
 
-.header-logo:hover{
-    transform:scale(1.05);
-}
+        .header-area::before{
+            content:"";
+            position:absolute;
+            top:50%;
+            left:50%;
+            width:520px;
+            height:520px;
+            transform:translate(-50%,-50%);
+            background-image:url("{% static 'images/hospital_logo.png' %}");
+            background-repeat:no-repeat;
+            background-position:center;
+            background-size:contain;
+            opacity:0.12;
+            z-index:0;
+        }
+
+        .header-area::after{
+            content:"";
+            position:absolute;
+            left:0;
+            right:0;
+            bottom:0;
+            height:2px;
+            background:linear-gradient(
+                90deg,
+                transparent,
+                #00695c,
+                transparent
+            );
+        }
+
+        .header-area .container{
+            position:relative;
+            z-index:2;
+        }
+
+        .header-logo{
+            height:90px;
+            width:auto;
+            transition:0.3s;
+            background:rgba(255,255,255,0.75);
+            padding:6px;
+            border-radius:8px;
+            box-shadow:0 3px 10px rgba(0,0,0,0.08);
+        }
+
+        .header-logo:hover{
+            transform:scale(1.05);
+        }
 
         .system-title{
-    color:#00695c;
-    font-weight:800;
-    font-size:42px;
-    letter-spacing:1px;
-    text-shadow:0 2px 8px rgba(0,105,92,0.15);
-}
+            color:#00695c;
+            font-weight:800;
+            font-size:42px;
+            letter-spacing:1px;
+            text-shadow:0 2px 8px rgba(0,105,92,0.15);
+        }
 
         .system-subtitle{
             font-size: 15px;
@@ -115,15 +168,24 @@
                 text-align: center;
             }
 
+            .header-area::before{
+                width:260px;
+                height:260px;
+                opacity:0.10;
+            }
+
             .header-logo{
                 height: 38px !important;
                 max-width: 70px;
+                padding:3px;
+                border-radius:6px;
             }
 
             .system-title{
                 font-size: 20px;
                 line-height: 1.1;
                 margin-bottom: 2px;
+                letter-spacing:0;
             }
 
             .system-subtitle{
@@ -164,72 +226,6 @@
                 margin-top: 20px;
             }
         }
-        .header-area{
-    position: relative;
-    overflow: hidden;
-    background: white;
-}
-
-.header-area{
-    position: relative;
-    overflow: hidden;
-
-    background:
-        linear-gradient(
-            90deg,
-            rgba(0,105,92,0.08),
-            rgba(255,255,255,0.95),
-            rgba(0,105,92,0.08)
-        );
-
-    border-bottom: 4px solid #00695c;
-}
-
-.header-area::before{
-    content:"";
-
-    position:absolute;
-
-    top:50%;
-    left:50%;
-
-    width:350px;
-    height:350px;
-
-    transform:translate(-50%,-50%);
-
-    background-image:url("{% static 'images/hospital_logo.png' %}");
-    background-repeat:no-repeat;
-    background-position:center;
-    background-size:contain;
-
-    opacity:0.04;
-
-    z-index:0;
-}
-
-.header-area .container{
-    position:relative;
-    z-index:2;
-}
-
-.header-area::after{
-    content:"";
-
-    position:absolute;
-    left:0;
-    right:0;
-    bottom:0;
-
-    height:2px;
-
-    background:linear-gradient(
-        90deg,
-        transparent,
-        #00695c,
-        transparent
-    );
-}
     </style>
 </head>
 
