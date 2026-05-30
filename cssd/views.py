@@ -469,16 +469,17 @@ def clinic_confirm_details(request, request_id):
         "items": cssd_request.items.all(),
     })
 def create_admin_once(request):
-    if not User.objects.filter(username="admin").exists():
-        user = User.objects.create_superuser(
-            username="admin",
-            email="admin@test.com",
-            password="Admin@12345"
-        )
+    user, created = User.objects.get_or_create(
+        username="admin",
+        defaults={"email": "admin@test.com"}
+    )
 
-        admin_group, _ = Group.objects.get_or_create(name="ADMIN")
-        user.groups.add(admin_group)
+    user.is_staff = True
+    user.is_superuser = True
+    user.set_password("Admin@12345")
+    user.save()
 
-        return JsonResponse({"status": "admin created"})
+    admin_group, _ = Group.objects.get_or_create(name="ADMIN")
+    user.groups.add(admin_group)
 
-    return JsonResponse({"status": "admin already exists"})
+    return JsonResponse({"status": "admin password reset"})
