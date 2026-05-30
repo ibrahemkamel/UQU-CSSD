@@ -1,4 +1,5 @@
 {% extends 'cssd/base.html' %}
+{% load tz %}
 {% block title %}Dashboard{% endblock %}
 
 {% block content %}
@@ -292,7 +293,7 @@
                             <span class="badge bg-secondary">{{ req.status }}</span>
                         {% endif %}
                     </td>
-                    <td>{{ req.created_at }}</td>
+                    <td>{{ req.created_at|localtime|date:"M d, Y - h:i A" }}</td>
                     <td>
                         <a href="{% url 'cssd_request_details' req.id %}"
                            class="btn btn-sm btn-outline-success">
