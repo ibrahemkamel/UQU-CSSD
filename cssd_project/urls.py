@@ -23,7 +23,22 @@ from cssd.views import (
 )
 
 urlpatterns = [
+path(
+    'change-password/',
+    auth_views.PasswordChangeView.as_view(
+        template_name='cssd/change_password.html',
+        success_url='/password-change-done/'
+    ),
+    name='change_password'
+),
 
+path(
+    'password-change-done/',
+    auth_views.PasswordChangeDoneView.as_view(
+        template_name='cssd/change_password_done.html'
+    ),
+    name='password_change_done'
+),
     path('admin/', admin.site.urls),
 
     path(
